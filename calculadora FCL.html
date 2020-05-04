@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 28px;
+        }
+        body{
+            background-image: url('https://uploaddeimagens.com.br/images/002/524/711/original/2130.jpg?1575343611');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-color: #84c4ff;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: start;
+            scroll-behavior: smooth;
+            height: 100vh;
+        }
+        h1, h2, h3, p, a, button, li {
+            text-shadow: 1px 1px 1px #000;
+        }
+        h1 {
+            font-size: 18px;
+            text-align: center;
+        }
+        h2 {
+            font-size: 20px;
+            
+        }
+        h3 {
+            margin-top: 10px;
+            font-size: 14px;            
+        }
+        p {
+            display: inline-block;
+            width: 30px;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        a, 
+        button {
+            display: block;
+            background-color: royalblue;
+            width: 280px;
+            height: 50px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            text-align: center;
+            line-height: 50px;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;     
+        }
+        a:hover,
+        button:hover {
+            background-color: #6383e2;
+        }
+        a:active,
+        button:active {
+            background-color: #1439a8;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+        }
+        label{
+            display: inline-block;
+            width: 95px;
+            font-size: 12px;
+            font-weight: 700;    
+        }
+        input {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            width: 80px;
+            font-size: 14px;
+            font-weight: 600;
+            text-align: right;
+            margin: 5px;
+            padding: 5px;
+            border: none;
+            border-bottom: solid 2px #fff;
+        }
+        input[type=number]::-webkit-inner-spin-button, 
+        input[type=number]::-webkit-outer-spin-button { 
+            -webkit-appearance: none; 
+            margin: 0; 
+        }
+
+        header h1 {
+            font-size: 22px;
+            margin: 10px;
+        }
+        .divisor {
+            width: 90%;
+            height: 2px;
+            background-color: #84c4ff;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, 1);
+        }
+        .menuPrincipal {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            width: 351px;
+            height: 62px;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.3);
+        }
+        .menuPrincipal a{
+            width: 45%;
+            height: 40px;
+            line-height: 40px;
+            font-size: 16px;
+
+        }
+        .subMenu {
+            margin-top: 2px;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-between;
+            width: 351px;
+        }
+        .subMenuDrop {      
+            display: block;      
+            width: 49%;  
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.3);                       
+        }
+        .subMenuDrop li {
+            color: #fff;
+            display: flex;
+            flex-direction: column;            
+            text-align: center;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 10px;
+            cursor: pointer;
+        }    
+        .subMenuDrop li:hover {
+            background-color: royalblue;
+        }
+        .calculadora {
+            width: 350px;
+            padding: 20px;
+            margin-top: 10px;
+            background-color: rgba(0, 0, 0, 0.8);
+            box-shadow: 20px 20px 20px rgba(0, 0, 0, 0.3);
+        }
+        #drop-content-lcl,
+        #drop-content-fcl {
+            display: none;
+        }
+        #calcLCLExpMar,
+        #calcLCLImpMar,
+        #calcFCLExpMar,
+        #calcFCLImpMar {
+            display:none;
+        }  
+        footer {
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header class="title">
+
+        <h1>Calculadora de Fretes Marítimo</h1>
+
+        <nav class="menuPrincipal">            
+            <a href="#" onclick="lcl()">LCL</a>
+            <a href="#" onclick="fcl()">FCL</a>         
+        </nav>
+        <nav class="subMenu">
+            <div class="subMenuDrop">
+                <ul class="" id="drop-content-lcl">
+                    <li onclick="showLCLImpMar()">Importação</li>
+                    <li onclick="showLCLExpMar()">Exportação</li>
+                </ul>
+            </div>
+            <div class="subMenuDrop">
+                <ul class="" id="drop-content-fcl">
+                    <li onclick="showFCLImpMar()">Importação</li>
+                    <li onclick="showFCLExpMar()">Exportação</li>
+                </ul>
+            </div>   
+        </nav>
+
+        <script>
+
+        // SCRIPT MAIN MENU
+           function lcl() {
+            if (document.getElementById("drop-content-lcl").style.display === "block") {
+                document.getElementById("drop-content-lcl").style.display = "none";
+            } else {
+                document.getElementById("drop-content-lcl").style.display = "block";
+                document.getElementById("drop-content-fcl").style.display = "none";
+            }
+           }
+
+           function fcl() {
+            if (document.getElementById("drop-content-fcl").style.display === "block") {
+                document.getElementById("drop-content-fcl").style.display = "none";
+            } else {
+                document.getElementById("drop-content-fcl").style.display = "block";
+                document.getElementById("drop-content-lcl").style.display = "none";
+            }
+           }           
+           
+        // SCRIPT MENU CALCULADORAS LCL MARITIMO
+           function showLCLImpMar() {
+                if (document.getElementById("calcLCLImpMar").style.display === "block") {
+                    document.getElementById("calcLCLImpMar").style.display = "none";
+                    document.getElementById("drop-content-lcl").style.display = "none";
+                } else {
+                    document.getElementById("calcLCLImpMar").style.display = "block";
+                    document.getElementById("drop-content-lcl").style.display = "none";
+                    document.getElementById("calcFCLImpMar").style.display = "none";
+                    document.getElementById("calcFCLExpMar").style.display = "none";
+                }
+                if (document.getElementById("calcLCLExpMar").style.display = "block") {
+                    document.getElementById("calcLCLExpMar").style.display = "none";
+                }
+            }
+
+            function showLCLExpMar() {
+                if (document.getElementById("calcLCLExpMar").style.display === "block") {
+                    document.getElementById("calcLCLExpMar").style.display = "none";
+                    document.getElementById("drop-content-lcl").style.display = "none";
+                } else {
+                    document.getElementById("calcLCLExpMar").style.display = "block";
+                    document.getElementById("drop-content-lcl").style.display = "none";
+                    document.getElementById("calcFCLImpMar").style.display = "none";
+                    document.getElementById("calcFCLExpMar").style.display = "none";
+                }
+                if (document.getElementById("calcLCLImpMar").style.display = "block") {
+                    document.getElementById("calcLCLImpMar").style.display = "none";
+                }
+            }
+     
+
+        // SCRIPT MENU CALCULADORAS FCL MARITIMO
+                    function showFCLImpMar() {
+                if (document.getElementById("calcFCLImpMar").style.display === "block") {
+                    document.getElementById("calcFCLImpMar").style.display = "none";
+                    document.getElementById("drop-content-fcl").style.display = "none";
+                } else {
+                    document.getElementById("calcFCLImpMar").style.display = "block";
+                    document.getElementById("drop-content-fcl").style.display = "none";
+                    document.getElementById("calcLCLImpMar").style.display = "none";
+                    document.getElementById("calcLCLExpMar").style.display = "none";
+                }
+                if (document.getElementById("calcFCLExpMar").style.display = "block") {
+                    document.getElementById("calcFCLExpMar").style.display = "none";
+                }
+            }
+
+            function showFCLExpMar() {
+                if (document.getElementById("calcFCLExpMar").style.display === "block") {
+                    document.getElementById("calcFCLExpMar").style.display = "none";
+                    document.getElementById("drop-content-fcl").style.display = "none";
+                } else {
+                    document.getElementById("calcFCLExpMar").style.display = "block";
+                    document.getElementById("drop-content-fcl").style.display = "none";
+                    document.getElementById("calcLCLImpMar").style.display = "none";
+                    document.getElementById("calcLCLExpMar").style.display = "none";
+                }
+                if (document.getElementById("calcFCLImpMar").style.display = "block") {
+                    document.getElementById("calcFCLImpMar").style.display = "none";
+                }
+            }
+                   
+        </script>
+
+    </header>
+    
+    <section>
+
+<!-- INÍCIO IMPORTAÇÃO LCL MARITIMO Ok Revisado !!!!-->        
+
+        <div class="calculadora" id="calcLCLImpMar">
+
+            <form name="ImpLCLMar" method="post" action="">
+                <h1>CÁLCULO IMPORTAÇÃO LCL MARÍTIMO</h1>
+                <br>
+                <h2>Cotação Dólar</h2>  
+                <div>
+                    <label>Dólar:</label>
+                    <input type="number" pattern="[0-9]" name="cotDolar" id="cotDolar" placeholder="" value=""/>
+                    <p>BRL</p>
+                </div>
+                <div>
+                    <label>Spread:</label>
+                    <input type="number" pattern="[0-9]" name="cotacaoDolar" id="spread" placeholder="" value=""/>
+                    <p>%</p>
+                </div>
+                <div class="divisor"></div>
+                <h2>Dados da Carga:</h2>        
+                <div>
+                    <label>Peso Bruto: </label>
+                    <input type="number" pattern="[0-9]" name="pesoBruto" id="pesoBruto" placeholder="000"/>
+                    <p>kg</p>
+                </div>
+                <div>
+                    <label>Comprimento: </label>
+                    <input type="number" pattern="[0-9]" name="comprimento" id="C" placeholder="000"/>
+                    <p>m</p>
+                </div>
+                <div>
+                    <label>Largura: </label>
+                    <input type="number" pattern="[0-9]" name="largura" id="L" placeholder="000"/>
+                    <p>m</p>
+                </div>
+                <div>
+                    <label>Altura: </label>
+                    <input type="number" pattern="[0-9]" name="altura" id="A" placeholder="000"/>
+                    <p>m</p>
+                </div>                 
+                <div>
+                    <h3>O PESO CUBADO É DE: </h3>
+                    <h1 id="resCubagemImp">0.000,00 kg</h1>
+                </div>         
+                <div class="divisor"></div>
+                <a onClick="cubagemImp()">Calcular Peso Cubado</a>
+                <div class="divisor"></div>
+                <div>
+                    <h3>O PESO BASE A SER USADO É: </h3>
+                    <h1 id="pesoBaseImp" class="pesoBase">0.000,00 kg</h1>
+                </div>    
+                
+                <div class="divisor"></div>
+
+                <h2>Frete</h2>        
+                <div>
+                    <label>Peso Base: </label>
+                    <input type="number" pattern="[0-9]" name="base" id="baseImp" placeholder="0000"/>
+                    <p>kg</p>
+                    </div>
+                    <div>
+                        <label>Tarifa: </label>
+                        <input type="number" pattern="[0-9]" name="tarifa" id="tarifa" placeholder="000"/>
+                        <p>USD</p>
+                    </div>          
+                    <div>
+                        <h3>O VALOR DO FRETE É DE: </h3>
+                        <h1 id="resFreteImp">R$ 0.000,00</h1>
+                    </div>         
+                    <div class="divisor"></div>
+                    <h3>Taxas</h3>                            
+                    <div>
+                        <label>THC: </label>
+                        <input type="number" pattern="[0-9]" name="thc" id="THC" placeholder="000"/>
+                        <p>BRL</p>
+                    </div>
+                    <div>
+                        <label>Levante: </label>
+                        <input type="number" pattern="[0-9]" name="levante" id="levante" placeholder="000"/>
+                        <p>BRL</p>
+                    </div> 
+                    <div>
+                        <label>Desova: </label>
+                        <input type="number" pattern="[0-9]" name="desova" id="desova" placeholder="000"/>
+                        <p>BRL</p>
+                    </div>  
+                    <div>
+                        <label>BL: </label>
+                        <input type="number" pattern="[0-9]" name="BL" id="BL" placeholder="000"/>
+                        <p>USD</p>
+                    </div>
+                    <div>
+                        <label>TRS: </label>
+                        <input type="number" pattern="[0-9]" name="TRS" id="TRS" placeholder="000"/>
+                        <p>USD</p>
+                    </div> 
+                    <div>
+                        <label>Desconsolidação: </label>
+                        <input type="number" pattern="[0-9]" name="desconsol" id="desconsol" placeholder="000"/>
+                        <p>USD</p>
+                    </div>
+                    <div>
+                            <h3>O VALOR DAS TAXAS É DE: </h3>
+                            <h1 id="resTaxasImp">R$ 0.000,00</h1>
+                    </div>
+                    <div class="divisor"></div>
+                    <a onClick="totalImp()">Calcular Total</a>
+                    <div>
+                        <h3>O VALOR TOTAL É DE: </h3>
+                        <h1 id="totalImp">R$ 0.000,00</h1>
+                    </div>
+                    <div class="divisor"></div>
+                    <button class="button" type="reset" value="reset">Novo Cálculo</button>
+            </form>
+            
+            <script type="text/javascript">
+
+                function cubagemImp() {
+    
+                    let pesoBruto = document.ImpLCLMar.pesoBruto.value,
+                        C = document.ImpLCLMar.C.value,
+                        L = document.ImpLCLMar.L.value,
+                        A = document.ImpLCLMar.A.value;
+
+                    totalCubagem = ((C * L) * A) * 1000;
+                    document.getElementById("resCubagemImp").innerHTML = totalCubagem.toLocaleString() + " kg";
+                    
+                    if (pesoBruto >= totalCubagem) {
+                        document.getElementById("pesoBaseImp").innerHTML = pesoBruto.toLocaleString() + " kg";
+                        document.getElementById("baseImp").value = pesoBruto.toLocaleString();
+                    } else {
+                        document.getElementById("pesoBaseImp").innerHTML = totalCubagem.toLocaleString() + " kg";
+                        document.getElementById("baseImp").value = totalCubagem.toLocaleString();
+                    }
+                };
+
+                function totalImp() {
+
+                    // Variáveis de captura dos dados no HTML
+                    let dolar = document.ImpLCLMar.cotDolar.value,
+                        spread = document.ImpLCLMar.spread.value
+                        base = document.ImpLCLMar.baseImp.value,     
+                        tarifa = document.ImpLCLMar.tarifa.value,
+                        thc = document.ImpLCLMar.THC.value,
+                        levante = document.ImpLCLMar.levante.value,
+                        desova = document.ImpLCLMar.desova.value,
+                        BL = document.ImpLCLMar.BL.value;
+                        TRS = document.ImpLCLMar.TRS.value,
+                        desconsol = document.ImpLCLMar.desconsol.value;
+
+                    // Calcula a Taxa do Dolar a ser usada
+                    let totalDolar = (parseFloat(dolar) * parseFloat(spread) / 100) + parseFloat(dolar);
+
+                    // Calcula o Frete
+                    let frete = (base * tarifa) * totalDolar;
+                    document.getElementById("resFreteImp").innerHTML = frete.toLocaleString();
+
+                    // Calculo Taxa THC
+                    let totalTHC = function () {
+                        if (thc * base <= 50) {
+                            return thc = 50
+                        } else {
+                            return (thc * base);
+                        }
+                    };
+
+                    // Calculo Taxa Desova                  
+                    let totalDesova = function () {
+                        if (desova * base <= 50) {
+                            return desova = 50 
+                        } else {
+                            return (desova * base);
+                        }
+                    };
+
+                    // Calcula as Taxas                  
+                    taxasImp = (totalTHC() + totalDesova() + parseFloat(levante)) + (parseFloat(BL) + parseFloat(TRS) + parseFloat(desconsol)) * parseFloat(totalDolar);
+                    document.getElementById("resTaxasImp").innerHTML = taxasImp.toLocaleString( 'pt-BR', { style: 'currency', currency: 'BRL' } );                  
+                                   
+                    // Calcula o Valor Total
+                    let totalImp = parseFloat(frete) + parseFloat(taxasImp);                    
+                    document.getElementById("totalImp").innerHTML = totalImp.toLocaleString( 'pt-BR', { style: 'currency', currency: 'BRL' } );
+                }
+                        
+            </script>
+
+        </div>
+
+<!-- INÍCIO EXPORTAÇÃO LCL MARITIMO -->        
+
+        <div class="calculadora" id="calcLCLExpMar"> 
+
+                <form name="ExpLCLMar" method="post" action="">
+                    <h1>CÁLCULO EXPORTAÇÃO LCL MARÍTIMO</h1>
+                    <br>
+                    <h2>Cotação Dólar</h2>  
+                    <div>
+                        <label>Dólar:</label>
+                        <input type="number" pattern="[0-9]" name="dolar" id="dolar" placeholder="" value=""/>
+                        <p>BRL</p>
+                    </div>
+                    <div>
+                        <label>Spread:</label>
+                        <input type="number" pattern="[0-9]" name="spread" id="spread" placeholder="" value=""/>
+                        <p>%</p>
+                    </div>
+                    <div class="divisor"></div>
+                    <h2>Dados da Carga:</h2>        
+                    <div>
+                        <label>Peso Bruto: </label>
+                        <input type="number" pattern="[0-9]" name="pesoBruto" id="pesoBruto" placeholder="000"/>
+                        <p>kg</p>
+                    </div>
+                    <div>
+                        <label>Comprimento: </label>
+                        <input type="number" pattern="[0-9]" name="comprimento" id="C" placeholder="000"/>
+                        <p>m</p>
+                    </div>
+                    <div>
+                        <label>Largura: </label>
+                        <input type="number" pattern="[0-9]" name="largura" id="L" placeholder="000"/>
+                        <p>m</p>
+                    </div>
+                    <div>
+                        <label>Altura: </label>
+                        <input type="number" pattern="[0-9]" name="altura" id="A" placeholder="000"/>
+                        <p>m</p>
+                    </div>                 
+                    <div>
+                        <h3>O PESO CUBADO É DE: </h3>
+                        <h1 id="resCubagem">0.000,00 kg</h1>
+                    </div>         
+                    <div class="divisor"></div>
+                    <a onClick="cubagemExp()">Calcular Peso Cubado</a>
+                    <div class="divisor"></div>
+                    <div>
+                        <h3>O PESO BASE A SER USADO É: </h3>
+                        <h1 id="pesoBase" class="pesoBase">0.000,00 kg</h1>
+                    </div>    
+                    
+                    <div class="divisor"></div>
+
+                    <h2>Frete</h2>        
+                    <div>
+                        <label>Peso Base: </label>
+                        <input type="number" pattern="[0-9]" name="base" id="base" placeholder="0000"/>
+                        <p>kg</p>
+                        </div>
+                        <div>
+                            <label>Tarifa: </label>
+                            <input type="number" pattern="[0-9]" name="tarifa" id="tarifa" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <div>
+                            <label>Bunker: </label>
+                            <input type="number" pattern="[0-9]" name="bunker" id="bunker" placeholder="000"/>
+                            <p>%</p>
+                        </div>                 
+                        <div>
+                            <h3>O VALOR DO FRETE É DE: </h3>
+                            <h1 id="resTarifa">R$ 0.000,00</h1>
+                        </div>         
+                        <div class="divisor"></div>
+                        <h3>Taxas</h3>                            
+                        <div>
+                            <label>THC: </label>
+                            <input type="number" pattern="[0-9]" name="thc" id="thc" placeholder="000"/>
+                            <p>BRL</p>
+                        </div>
+                        <div>
+                            <label>TEC: </label>
+                            <input type="number" pattern="[0-9]" name="tec" id="tec" placeholder="000"/>
+                            <p>BRL</p>
+                        </div>  
+                        <div>
+                            <label>BL: </label>
+                            <input type="number" pattern="[0-9]" name="BL" id="BL" placeholder="000"/>
+                            <p>BRL</p>
+                        </div> 
+                        <div>
+                                <h3>O VALOR DAS TAXAS É DE: </h3>
+                                <h1 id="resTaxas">R$ 0.000,00</h1>
+                        </div>
+                        <div class="divisor"></div>
+                        <a onClick="totalExportacao()">Calcular Total</a>
+                        <div>
+                            <h3>O VALOR TOTAL É DE: </h3>
+                            <h1 id="total">R$ 0.000,00</h1>
+                        </div>
+                        <div class="divisor"></div>
+                        <button class="button" type="reset" value="reset">Novo Cálculo</button>
+                </form>
+                <script type="text/javascript">
+
+                    
+
+                    function cubagemExp() {
+        
+                        let pesoBruto = document.ExpLCLMar.pesoBruto.value,
+                            C = document.ExpLCLMar.C.value,
+                            L = document.ExpLCLMar.L.value,
+                            A = document.ExpLCLMar.A.value;
+
+                        totalCubagem = ((C * L) * A) * 1000;
+                        document.getElementById("resCubagem").innerHTML = totalCubagem.toLocaleString() + " kg";
+                        console.log(totalCubagem);
+                        
+                        if (pesoBruto >= totalCubagem) {
+                            document.getElementById("pesoBase").innerHTML = pesoBruto.toLocaleString() + " kg";
+                            document.getElementById("base").value = pesoBruto.toLocaleString();
+                        } else {
+                            document.getElementById("pesoBase").innerHTML = totalCubagem.toLocaleString() + " kg";
+                            document.getElementById("base").value = totalCubagem.toLocaleString();
+                        }
+                    }
+
+                    function totalExportacao() {
+
+                        // Variáveis de captura dos dados no HTML
+                        let dolar = document.ExpLCLMar.dolar.value,
+                            spread = document.ExpLCLMar.spread.value,
+                            base = document.ExpLCLMar.base.value,     
+                            tarifa = document.ExpLCLMar.tarifa.value,
+                            bunker = document.ExpLCLMar.bunker.value,
+                            thc = document.ExpLCLMar.thc.value,
+                            tec = document.ExpLCLMar.tec.value,
+                            BL = document.ExpLCLMar.BL.value;
+
+                        // Calcula a Taxa do Dolar a ser usada
+                        let totalDolar = (parseFloat(dolar) * parseFloat(spread) / 100) + parseFloat(dolar);
+                                                    
+                        // Calcula o Frete
+                        let frete = base * tarifa;
+
+                        // Calcula o Bunker com o valor do frete calculado na variável anterior
+                        let bunkerTotal = frete * bunker / 100;
+
+                        // Calcula o Frete total que é o Valor do Frete + Valor do Bunker
+                        let freteTotal = (frete + bunkerTotal) * parseFloat(totalDolar);
+                        document.getElementById("resTarifa").innerHTML = freteTotal.toLocaleString( 'pt-BR', { style: 'currency', currency: 'BRL' } );
+
+                        // Calculo Taxa TEC
+                        let totalTec = function () {
+                            if (tec <= 50) {
+                                return tec = 50
+                            } else {
+                                return (tec);
+                            }
+                        };
+
+                        // Calcula as Taxas
+                        let taxas = (base * thc) + (base * totalTec()) + parseInt(BL);
+                        document.getElementById("resTaxas").innerHTML = taxas.toLocaleString( 'pt-BR', { style: 'currency', currency: 'BRL' } );
+
+                        // Calcula o Valor Total
+                        let total = freteTotal + taxas;
+                        document.getElementById("total").innerHTML = total.toLocaleString( 'pt-BR', { style: 'currency', currency: 'BRL' } );
+
+                    }
+                            
+                </script>            
+
+        </div> 
+
+       
+<!-- INÍCIO IMPORTAÇÃO FCL MARITIMO -->        
+
+        <div class="calculadora" id="calcFCLImpMar">
+
+            <form name="importacao" method="post" action="">
+                <h1>CÁLCULO IMPORTAÇÃO FCL MARÍTIMO</h1>
+                <br>
+                <h2>Cotação Dólar</h2>  
+                <div>
+                    <label>Dólar:</label>
+                    <input type="number" pattern="[0-9]" name="cotDolar" id="dolar" placeholder="" value=""/>
+                    <p>BRL</p>
+                </div>
+                <div>
+                    <label>Spread:</label>
+                    <input type="number" pattern="[0-9]" name="cotacaoDolar" id="spread" placeholder="" value=""/>
+                    <p>%</p>
+                </div>
+                <div class="divisor"></div>
+            </form>                
+        </div>
+
+<!-- INÍCIO EXPORTAÇÃO FCL MARITIMO -->        
+
+        <div class="calculadora" id="calcFCLExpMar"> 
+
+            <form name="expFCLMar" method="post" action="">
+                    <h1>CÁLCULO EXPORTAÇÃO FCL MARÍTIMO</h1>
+                    <br>
+                    <h2>Cotação Dólar</h2>  
+                    <div>
+                        <label>Dólar:</label>
+                        <input type="number" pattern="[0-9]" name="cotDolar" id="cotDolar" placeholder="" value=""/>
+                        <p>BRL</p>
+                    </div>
+                    <div>
+                        <label>Spread:</label>
+                        <input type="number" pattern="[0-9]" name="spread" id="spread" placeholder="" value=""/>
+                        <p>%</p>
+                    </div>
+                    <div class="divisor"></div>
+                
+                    <h2>Frete</h2>        
+                        <div>
+                            <label>BAS:</label>
+                            <input type="number" pattern="[0-9]" name="bas" id="BAS" placeholder="0000"/>
+                            <p>USD</p>
+                        </div>
+                        <div>
+                            <label>BAF:</label>
+                            <input type="number" pattern="[0-9]" name="baf" id="BAF" placeholder="0000"/>
+                            <p>USD</p>
+                        </div>          
+                        <div>
+                            <label>SER:</label>
+                            <input type="number" pattern="[0-9]" name="ser" id="SER" placeholder="0000"/>
+                            <p>USD</p>
+                        </div>
+                        <a onclick="allin()">Calcular Frete</a>
+                        <div>
+                            <h3>O VALOR DO FRETE É DE: </h3>
+                            <h1 id="freteAllin">0</h1>
+                        </div>         
+                        <div class="divisor"></div>
+                        <h2>Taxas Locais de Origem</h2>                            
+                        <div>
+                            <label>Lacre:</label>
+                            <input type="number" pattern="[0-9]" name="lacre" id="lacre" placeholder="000"/>
+                            <p>BRL</p>
+                        </div>
+                        <div>
+                            <label>THC:</label>
+                            <input type="number" pattern="[0-9]" name="thc" id="OTHC" placeholder="000"/>
+                            <p>BRL</p>
+                        </div>  
+                        <div>
+                            <label>BL:</label>
+                            <input type="number" pattern="[0-9]" name="BL" id="OBL" placeholder="000"/>
+                            <p>BRL</p>
+                        </div>
+                        <div>
+                            <label>Qtd Containers:</label>
+                            <input type="number" pattern="[0-9]" name="qtdCtn" id="OQtdCtn" placeholder="000"/>
+                            <p></p>
+                        </div> 
+                        <a onclick="taxasOrigem()">Calcular Taxas de Origem</a>
+                        <div>
+                            <h3>O VALOR DAS TAXAS É DE: </h3>
+                            <h1 id="resTaxasOrigem">0</h1>
+                        </div>
+                        <div class="divisor"></div>
+                        <h2>Taxas Locais de Destino</h2>                            
+                        <div>
+                            <label>THC:</label>
+                            <input type="number" pattern="[0-9]" name="thc" id="DTHC" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <div>
+                            <label>Inspeção:</label>
+                            <input type="number" pattern="[0-9]" name="inspecao" id="inspecao" placeholder="000"/>
+                            <p>USD</p>
+                        </div>  
+                        <div>
+                            <label>BL:</label>
+                            <input type="number" pattern="[0-9]" name="BL" id="DBL" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <div>
+                            <label>Qtd Containers:</label>
+                            <input type="number" pattern="[0-9]" name="qtdCtn" id="DQtdCtn" placeholder="000"/>
+                            <p></p>
+                        </div> 
+                        <a onclick="taxasDestino()">Calcular Taxas de Destino</a>
+                        <div>
+                            <h3>O VALOR DAS TAXAS É DE: </h3>
+                            <h1 id="resTaxasDestino">0</h1>
+                        </div>
+                        <div class="divisor"></div>
+                        <h2>Sobre Taxas</h2>                            
+                        <div>
+                            <label>ERS:</label>
+                            <input type="number" pattern="[0-9]" name="ers" id="ERS" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <div>
+                            <label>Suez:</label>
+                            <input type="number" pattern="[0-9]" name="suez" id="SUEZ" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <a onclick="sobreTaxas()">Calcular Sobre Taxas</a>
+                        <div>
+                            <h3>O VALOR DAS SOBRE TAXAS É DE: </h3>
+                            <h1 id="totalSobreTaxas">0</h1>
+                        </div>                
+                        <div class="divisor"></div>
+                        <h2>Totais</h2>
+                        <div>
+                            <label>Frete All-in:</label>
+                            <input type="number" pattern="[0-9]" name="totalFrete" id="allin" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <div>
+                            <label>Taxas Locais de Origem:</label>
+                            <input type="number" pattern="[0-9]" name="taxasLocais" id="taxasLocais" placeholder="000"/>
+                            <p>BRL</p>
+                        </div>
+                        <div>
+                            <label>Taxas Locais de Destino:</label>
+                            <input type="number" pattern="[0-9]" name="taxasDestino" id="taxasDestino" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <div>
+                            <label>Sobre Taxas:</label>
+                            <input type="number" pattern="[0-9]" name="sobreTaxas" id="st" placeholder="000"/>
+                            <p>USD</p>
+                        </div>
+                        <a onClick="totalExpFCLMar()">Calcular Total</a>
+                        <div>
+                            <h3>O VALOR TOTAL É DE: </h3>
+                            <h1 id="totalExpFCLMar">0</h1>
+                        </div>
+                        <div class="divisor"></div>
+                        <button class="button" type="reset" value="reset">Novo Cálculo</button>
+            </form>
+
+            <script type="text/javascript">
+                        
+                function allin() {
+
+                    let BAS = document.expFCLMar.BAS.value,
+                        BAF = document.expFCLMar.BAF.value,
+                        SER = document.expFCLMar.SER.value;
+
+                    totalFrete = parseInt(BAS) + parseInt(BAF) + parseInt(SER);
+                    document.getElementById("freteAllin").innerHTML = totalFrete.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+                    document.getElementById("allin").value = totalFrete;
+                }     
+                
+                function taxasOrigem() {
+                    let lacre = document.expFCLMar.lacre.value,
+                        othc = document.expFCLMar.OTHC.value,
+                        obl = document.expFCLMar.OBL.value,
+                        oQtdCtn = document.expFCLMar.OQtdCtn.value;
+
+                    totalTaxasOrigem = (parseInt(lacre) + parseInt(othc) + parseInt(obl)) * oQtdCtn;
+                    document.getElementById("resTaxasOrigem").innerHTML = totalTaxasOrigem.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL'});
+                    document.getElementById("taxasLocais").value = totalTaxasOrigem;
+                }
+
+                function taxasDestino() {
+                    let inspecao = document.expFCLMar.inspecao.value,
+                        dthc = document.expFCLMar.DTHC.value,
+                        dbl = document.expFCLMar.DBL.value,
+                        dQtdCtn = document.expFCLMar.DQtdCtn.value;
+
+                    totalTaxasDestino = (parseInt(inspecao) + parseInt(dthc) + parseInt(dbl)) * dQtdCtn;
+                    document.getElementById("resTaxasDestino").innerHTML = totalTaxasDestino.toLocaleString('en-US', { style: 'currency', currency: 'USD'});
+                    document.getElementById("taxasDestino").value = totalTaxasDestino;
+                }
+
+                function sobreTaxas() {
+                    let ERS = document.expFCLMar.ERS.value,
+                        SUEZ = document.expFCLMar.SUEZ.value;
+
+                    sobreTaxas = ( parseFloat(ERS) + parseFloat(SUEZ) );
+                    document.getElementById("totalSobreTaxas").innerHTML = sobreTaxas.toLocaleString('en-US', {style: 'currency', currency: 'USD'});
+                    document.getElementById("st").value = sobreTaxas;
+                }
+              
+                function totalExpFCLMar() {
+                    let allin = document.expFCLMar.allin.value,
+                        origem = document.expFCLMar.taxasLocais.value,
+                        destino = document.expFCLMar.taxasDestino.value,
+                        st = document.expFCLMar.st.value,
+                        dolar = document.expFCLMar.cotDolar.value,
+                        spread = document.expFCLMar.spread.value;
+
+                    // Calcula a Taxa do Dolar a ser usada
+                    let totalDolar = (parseFloat(dolar) * parseFloat(spread) / 100) + parseFloat(dolar);
+
+                    totalExportacao = ( ( parseFloat(allin) + parseFloat(destino) + parseFloat(st) ) * parseFloat(totalDolar) ) + ( parseFloat(origem) );
+                    document.getElementById("totalExpFCLMar").innerHTML = totalExportacao.toLocaleString('pr-BR', {style: 'currency', currency: 'BRL'});
+                }
+                
+            </script>            
+
+        </div>
+
+      
+    </section>
+
+    <footer>
+        <h3>Desenvolvido por Brunotech Informática - 2019</h3>
+    </footer>
+</body>
+</html>
